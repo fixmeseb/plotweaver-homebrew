@@ -3,6 +3,7 @@ import {
   BackgroundVariant,
   ConnectionLineType,
   Controls,
+  Panel,
   ReactFlow,
   ReactFlowProvider,
   useReactFlow,
@@ -107,6 +108,10 @@ function Editor() {
           >
             <Background variant={BackgroundVariant.Dots} gap={GRID * 2} size={1} color="#4a403a" />
             <Controls showInteractive={false} />
+            <Panel position="bottom-center" className="disclaimer">
+              This is unofficial fan content, created and shared for non-commercial use. It has not
+              been reviewed by Dragonsteel Entertainment, LLC or Brotherwise Games, LLC.
+            </Panel>
           </ReactFlow>
         </div>
         <Inspector />

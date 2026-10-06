@@ -8,7 +8,7 @@ right-angle connectors and grouped under section banners.
 
 ```sh
 npm install
-npm run dev      # http://localhost:5173
+npm run dev      # http://localhost:5173/plotweaver-homebrew/
 npm run build    # static build in dist/
 ```
 
