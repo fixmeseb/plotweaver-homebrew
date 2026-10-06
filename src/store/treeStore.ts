@@ -48,9 +48,18 @@ type TreeState = {
   redo: () => void;
 };
 
+/**
+ * Height always follows content. Earlier versions let width resizes pin a fixed
+ * height, which left the bottom handle behind when text reflowed, so drop it.
+ */
+function unpinHeight(node: TreeNode): TreeNode {
+  const { height: _h, ...rest } = node;
+  return rest as TreeNode;
+}
+
 function clean(nodes: TreeNode[], edges: TreeEdge[]): Snapshot {
   return {
-    nodes: nodes.map(({ selected: _s, dragging: _d, ...n }) => n as TreeNode),
+    nodes: nodes.map(({ selected: _s, dragging: _d, ...n }) => unpinHeight(n as TreeNode)),
     edges: edges.map(({ selected: _s, ...e }) => e),
   };
 }
@@ -167,7 +176,7 @@ export const useTreeStore = create<TreeState>()(
         loadTree: (file) =>
           commit({
             name: file.name,
-            nodes: file.nodes.map((n) => ({ ...n, selected: false })),
+            nodes: file.nodes.map((n) => ({ ...unpinHeight(n), selected: false })),
             edges: file.edges,
           }),
 
@@ -213,6 +222,14 @@ export const useTreeStore = create<TreeState>()(
       name: 'plotweaver-homebrew:tree',
       version: 1,
       partialize: ({ name, nodes, edges }) => ({ name, ...clean(nodes, edges) }),
+      merge: (persisted, current) => {
+        const saved = persisted as Partial<TreeState> | undefined;
+        return {
+          ...current,
+          ...saved,
+          nodes: (saved?.nodes ?? current.nodes).map(unpinHeight),
+        };
+      },
     },
   ),
 );

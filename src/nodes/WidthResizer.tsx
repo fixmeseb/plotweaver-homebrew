@@ -13,6 +13,7 @@ export default function WidthResizer({ visible, minWidth }: { visible: boolean; 
           key={position}
           position={position}
           variant={ResizeControlVariant.Line}
+          resizeDirection="horizontal"
           minWidth={minWidth}
           maxWidth={800}
           onResizeStart={checkpoint}
